@@ -1,6 +1,6 @@
-# Brainery
+# django-task-manager-lab
 
-Brainery is a hands-on lab and simple Task Manager web application built with Django and Python. This repository guides you through creating a Django project, defining a Task model, connecting to a database, and building a basic UI to manage tasks.
+django-task-manager-lab is a hands-on lab and simple Task Manager web application built with Django and Python. This repository guides you through creating a Django project, defining a Task model, connecting to a database, and building a basic UI to manage tasks.
 
 ---
 
