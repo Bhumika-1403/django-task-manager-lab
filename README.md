@@ -1,255 +1,306 @@
-# django-task-manager-lab
+# Coding Lab: Building a Simple Task Manager with Django
 
-django-task-manager-lab is a hands-on lab and simple Task Manager web application built with Django and Python. This repository guides you through creating a Django project, defining a Task model, connecting to a database, and building a basic UI to manage tasks.
+## Lab Objective
 
----
+In this lab, you will build a simple **Task Manager web application using Django and Python**.
 
-## Table of Contents
+You will work with the core Django development flow:
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
-  - [Clone the repo](#clone-the-repo)
-  - [Create a virtual environment](#create-a-virtual-environment)
-  - [Install dependencies](#install-dependencies)
-  - [Database setup & migrations](#database-setup--migrations)
-  - [Create a superuser (optional)](#create-a-superuser-optional)
-  - [Run the development server](#run-the-development-server)
-- [Project Structure](#project-structure)
-- [Task model (example)](#task-model-example)
-- [Routes / Views](#routes--views)
-- [Testing](#testing)
-- [Deployment notes](#deployment-notes)
-- [Contributing](#contributing)
-- [License](#license)
-- [Maintainer / Contact](#maintainer--contact)
+**Model → Migrations → Views → URLs → Templates → Forms → Database**
+
+By the end of the lab, you will have a working application that allows users to:
+
+* View existing tasks
+* Add new tasks
+* Store task information in a database
+* Manage tasks through Django Admin
 
 ---
 
-## Project Overview
+## Scenario
 
-This lab walks through the core Django development flow:
+A development team needs a simple internal application to keep track of its work items.
 
-Model → Migrations → Views → URLs → Templates → Forms → Database
+Each task should contain:
 
-By the end of the lab you will have a working Task Manager that supports viewing tasks and adding new tasks via the app as well as managing tasks through the Django admin.
+* **Title** – A short name for the task
+* **Description** – Details about the task
+* **Status** – The current progress of the task
+* **Created At** – The date and time when the task was created
 
----
-
-## Features
-
-- Create, read, update, and delete tasks (CRUD)
-- Task status (Pending, In Progress, Completed)
-- Created timestamp for each task
-- Simple UI using Django templates (easy to extend)
-
-Optional enhancements you can add:
-
-- Due dates, priority, tags, and filtering
-- User authentication and per-user task lists
-- REST API with Django REST Framework
+Your goal is to build this application using Django's built-in features.
 
 ---
 
 ## Prerequisites
 
-- Python 3.8+
-- pip
-- Optional: virtualenv or venv
-- Basic familiarity with Python and the command line
+Before starting the lab, make sure you have:
+
+* Python 3.8 or later
+* `pip`
+* A code editor such as VS Code
+* Basic Python knowledge
+* Basic HTML knowledge
+* Familiarity with using the terminal or command prompt
 
 ---
 
-## Quick Start
+# Lab Instructions
 
-Follow these steps to run the project locally.
+## Step 1: Set Up the Python Environment
 
-### Clone the repo
+Create a new Python virtual environment for the project.
 
-```bash
-git clone https://github.com/Bhumika-1403/Brainery.git
-cd Brainery
-```
+### Tasks
 
-### Create a virtual environment
+1. Create a virtual environment.
+2. Activate the virtual environment.
+3. Install Django.
+4. Verify that Django has been installed successfully.
 
-Using venv (recommended):
+### Checkpoint
 
-```bash
-python -m venv .venv
-# macOS / Linux
-source .venv/bin/activate
-# Windows (PowerShell)
-.\.venv\Scripts\Activate.ps1
-```
-
-### Install dependencies
-
-If the repository includes a requirements file:
-
-```bash
-pip install -r requirements.txt
-```
-
-If there is no requirements file yet, install Django:
-
-```bash
-pip install django
-```
-
-### Database setup & migrations
-
-This lab uses SQLite by default for development. Apply migrations:
-
-```bash
-python manage.py migrate
-```
-
-If you change models, create and apply migrations:
-
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### Create a superuser (optional)
-
-To access Django Admin:
-
-```bash
-python manage.py createsuperuser
-```
-
-### Run the development server
-
-```bash
-python manage.py runserver
-```
-
-Open http://127.0.0.1:8000/ in your browser. A common task listing page is available at `/tasks/` if the app routes are configured as described in this lab.
+Confirm that your virtual environment is active and Django is available before continuing.
 
 ---
 
-## Project Structure
+## Step 2: Create the Django Project
 
-A typical layout for this project looks like:
+Create a Django project named:
 
-```
-Brainery/
-├─ manage.py
-├─ requirements.txt
-├─ README.md
-├─ brainery/        # Django project settings
-│  ├─ settings.py
-│  ├─ urls.py
-│  └─ wsgi.py
-└─ tasks/           # Django app
-   ├─ migrations/
-   ├─ models.py
-   ├─ views.py
-   ├─ urls.py
-   └─ templates/tasks/
+```text
+taskmanager
 ```
 
-Adjust the structure above to match the repository if it differs.
+### Tasks
+
+1. Create the Django project.
+2. Navigate into the project directory.
+3. Start the Django development server.
+4. Open the application in your browser.
+
+### Checkpoint
+
+You should see Django's default welcome page.
+
+This confirms that your Django project is running successfully.
 
 ---
 
-## Task model (example)
+## Step 3: Create the Tasks Application
 
-Use this example Task model or adapt your existing model in `tasks/models.py`:
+Create a Django application named:
 
-```python
-from django.db import models
-
-class Task(models.Model):
-    STATUS_PENDING = 'pending'
-    STATUS_IN_PROGRESS = 'in_progress'
-    STATUS_COMPLETED = 'completed'
-
-    STATUS_CHOICES = [
-        (STATUS_PENDING, 'Pending'),
-        (STATUS_IN_PROGRESS, 'In Progress'),
-        (STATUS_COMPLETED, 'Completed'),
-    ]
-
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
-    created_at = models.DateTimeField(auto_now_add=True)
-    due_date = models.DateTimeField(null=True, blank=True)
-    priority = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
+```text
+tasks
 ```
 
-Remember to run makemigrations and migrate after editing models.
+### Tasks
+
+1. Create the `tasks` application.
+2. Add the application to `INSTALLED_APPS`.
+3. Review the files generated by Django.
+
+### Checkpoint
+
+The `tasks` application should be successfully connected to your Django project.
 
 ---
 
-## Routes / Views
+## Step 4: Create the Task Model
 
-A minimal set of routes you can provide in `tasks/urls.py`:
+Create a `Task` model inside the `tasks` application.
 
-- `/tasks/` — list all tasks
-- `/tasks/new/` — form to create a new task
-- `/tasks/<id>/edit/` — edit a task
+The model should contain the following fields:
 
-In `tasks/views.py`, create views that query the Task model, render templates, handle form validation, and redirect after successful submissions.
+| Field         | Requirement                         |
+| ------------- | ----------------------------------- |
+| `title`       | Short text describing the task      |
+| `description` | Detailed information about the task |
+| `status`      | Current task status                 |
+| `created_at`  | Date and time the task was created  |
 
-Example: display tasks at `/tasks/` using a template `templates/tasks/list.html`.
+The `status` field should support the following values:
+
+* Pending
+* In Progress
+* Completed
+
+### Tasks
+
+1. Define the `Task` model in `models.py`.
+2. Choose appropriate Django field types.
+3. Configure the status choices.
+4. Configure the creation timestamp.
+5. Create the required migrations.
+6. Apply the migrations.
+
+### Checkpoint
+
+The `Task` model should be successfully created in the database.
 
 ---
 
-## Testing
+## Step 5: Configure Django Admin
 
-If you add tests, run them with:
+Make the `Task` model available through Django Admin.
 
-```bash
-python manage.py test
+### Tasks
+
+1. Register the `Task` model in `admin.py`.
+2. Create a Django superuser.
+3. Start the development server.
+4. Open Django Admin.
+5. Log in using the superuser account.
+6. Create at least three sample tasks.
+
+Use different statuses for your sample tasks.
+
+### Checkpoint
+
+You should be able to view and manage your tasks through Django Admin.
+
+---
+
+## Step 6: Display the Tasks
+
+Create a view that retrieves all tasks from the database.
+
+### Tasks
+
+1. Create a task-list view.
+2. Retrieve the Task records from the database.
+3. Create an application-level `urls.py`.
+4. Configure a URL for the task list.
+5. Connect the application URLs to the main project.
+6. Create an HTML template for displaying the tasks.
+
+Use the following URL:
+
+```text
+/tasks/
 ```
 
-Write unit tests for models, views, and forms to ensure behavior remains correct as you extend the app.
+The page should display:
+
+* Task title
+* Description
+* Status
+* Created date
+
+Use Django template syntax to display the task records dynamically.
+
+### Checkpoint
+
+When you visit:
+
+```text
+/tasks/
+```
+
+the tasks created through Django Admin should be displayed on the page.
 
 ---
 
-## Deployment notes
+## Step 7: Add a New Task
 
-When deploying to production:
+Extend the application so users can create new tasks from the web application.
 
-- Use a production-ready database such as PostgreSQL or MySQL
-- Set `DEBUG = False` and configure `ALLOWED_HOSTS`
-- Store sensitive settings (SECRET_KEY, DB credentials) in environment variables
-- Serve static files with WhiteNoise, a web server (Nginx), or a CDN
-- Use Gunicorn (or an ASGI server like Daphne) behind a reverse proxy
+### Tasks
 
-See Django's deployment checklist for details: https://docs.djangoproject.com/en/stable/howto/deployment/checklist/
+1. Create a Django form for the `Task` model.
+2. Create a view to display and process the form.
+3. Add a URL for creating a task.
+4. Create a template containing the form.
+5. Validate the submitted data.
+6. Save the new task to the database.
+7. Redirect the user to the task list after successful submission.
+
+Use the following URL:
+
+```text
+/tasks/new/
+```
+
+### Checkpoint
+
+Create a new task through the application.
+
+After submitting the form, verify that the new task appears on:
+
+```text
+/tasks/
+```
 
 ---
 
-## Contributing
+# Final Validation
 
-Contributions are welcome — please follow these steps:
+Before completing the lab, verify that your application can:
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/your-feature`
-3. Commit your changes and push the branch
-4. Open a pull request describing your change
-
-Please include tests and update the README when adding new functionality.
-
----
-
-## License
-
-Add a LICENSE file to the repository and specify the license here (for example, MIT).
+* [ ] Start successfully using the Django development server
+* [ ] Create and store Task records in the database
+* [ ] Manage tasks through Django Admin
+* [ ] Display tasks at `/tasks/`
+* [ ] Display the task title, description, status, and creation date
+* [ ] Display a form at `/tasks/new/`
+* [ ] Create a new task through the web application
+* [ ] Save the new task to the database
+* [ ] Display the newly created task in the task list
 
 ---
 
-## Maintainer / Contact
+# Expected Outcome
 
-Maintainer: Bhumika — https://github.com/Bhumika-1403
+At the end of the lab, you should have a functional Django Task Manager application demonstrating the following workflow:
 
-If you have questions or suggestions, open an issue or submit a pull request.
+```text
+User
+ ↓
+URL
+ ↓
+View
+ ↓
+Model
+ ↓
+Database
+ ↓
+View
+ ↓
+Template
+ ↓
+HTML Response
+```
+
+You should also be comfortable with the basic Django concepts of:
+
+* Projects and applications
+* Models
+* Migrations
+* Django ORM
+* Views
+* URL routing
+* Templates
+* Forms
+* Django Admin
+
+---
+
+# Optional Challenge
+
+If you complete the main lab early, extend the application with an **Edit Task** feature.
+
+Allow users to:
+
+* Open an existing task
+* Modify its title and description
+* Change its status
+* Save the updated task
+
+Suggested URL:
+
+```text
+/tasks/<id>/edit/
+```
+
+Try to implement this using Django's built-in features without copying a complete solution.
